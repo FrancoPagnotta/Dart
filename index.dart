@@ -55,7 +55,7 @@ void main() {
   toGreetSomebody('Fran');
   sendMessage(name: 'Fran', message: 'Keep learning');
 
-  // Classes
+  // Class instances
   final thor = Heroe();
   thor.name = 'Thor Odins son';
   thor.power = 'Viking power';
@@ -78,13 +78,45 @@ void main() {
   food.origin = 'Argentina';
   food.type = 'meat';
   print(food.info);
-  
+
   final square = Square(5);
   print('area: ${square.calculateArea()}');
   print('side: ${square.side}');
   print('area getter: ${square.area}');
+
+  final dog = Dog();
+  animalSound(dog);
+
+  final cat = Cat();
+  animalSound(cat);
+
+  final superman = SuperHeroe('Tony Stark');
+  print(superman);
+
+  final luthor = Villain('Lex Luthor');
+  print(luthor);
+
+  //mixin instances
+  final dolphin = Dolphin();
+  dolphin.swim('dolphin');
+
+  final bat = Bat();
+  bat.fly('bat');
+  bat.walk('bat');
+
+  final dove = Dove();
+  dove.fly('dove');
+  dove.walk('dove');
+
+  final shark = Shark();
+  shark.swim('shark');
+  
+  final flyingFish = FlyingFish();
+  flyingFish.fly('flyingFish');
+  flyingFish.swim('flyingFish');
 }
 
+////////////////////////////////////////////////////////////
 // Functions
 void toGreet() {
   print('Hello');
@@ -98,6 +130,11 @@ void sendMessage({required String name, required String message}) {
   print('Receiver: $name Message: $message');
 }
 
+void animalSound(Animal animal) {
+  animal.emitSound();
+}
+
+/////////////////////////////////////////////////////////////////
 // Classes
 class Heroe {
   String? name;
@@ -186,20 +223,104 @@ class Food {
 
 class Square {
   double side = 0;
-  
+
   Square(double side) {
     side = side;
   }
-  
+
   double get area {
     return side * side;
   }
-  
+
   set area(double value) {
     side = math.sqrt(value);
   }
-  
+
   double calculateArea() {
     return side * side;
   }
 }
+
+abstract class Animal {
+  int? legs;
+
+  Animal();
+
+  void emitSound();
+}
+
+class Dog implements Animal {
+  @override
+  int? legs;
+
+  @override
+  void emitSound() {
+    print('wow');
+  }
+}
+
+class Cat implements Animal {
+  @override
+  int? legs;
+  int? tail;
+
+  @override
+  void emitSound() {
+    print('miau');
+  }
+}
+
+abstract class Character {
+  String? power;
+  String name;
+
+  Character(this.name);
+
+  @override
+  String toString() {
+    return '$name - $power';
+  }
+}
+
+class SuperHeroe extends Character {
+  int courage = 100;
+
+  SuperHeroe(String name) : super(name);
+}
+
+class Villain extends Character {
+  int evil = 100;
+
+  Villain(String name) : super(name);
+}
+
+// Mixins
+abstract class Animals {}
+
+abstract class Mammal extends Animals {}
+
+abstract class Bird extends Animals {}
+
+abstract class Fish extends Animals {}
+
+abstract class Fly {
+  void fly(String animal) => print('$animal flying');
+}
+
+abstract class Walk {
+  void walk(String animal) => print('$animal walking');
+}
+
+abstract class Swim {
+  void swim(String animal) => print('$animal swimming');
+}
+
+class Dolphin extends Mammal with Swim {}
+
+class Bat extends Mammal with Fly, Walk {}
+
+class Dove extends Bird with Walk, Fly {}
+
+class Shark extends Fish with Swim {}
+
+class FlyingFish extends Fish with Fly, Swim {}
